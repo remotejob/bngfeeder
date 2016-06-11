@@ -15,9 +15,7 @@ func TestCreate(t *testing.T) {
 	defer dbsession.Close()
 	
 	sitemapObjs := getsitemap.GetUrl("http://kaukotyo.fi/sitemap.xml")
-	
-	
-	
-	Create(*dbsession,"kaukotuo.fi",sitemapObjs )	
+		
+	Create(*dbsession,"kaukotyo.fi",sitemapObjs )	
 
 }

@@ -1,15 +1,17 @@
 package createdb
 
 import (
-	"fmt"
+//	"fmt"
 	"github.com/remotejob/bngfeeder/domains"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"
 )
 
-func Create(dbsession mgo.Session, site string, sitemap []domains.SitemapObj) {
+func CheckIfExist(dbsession mgo.Session, site string) bool {
 
+	var exist bool = true
+	
 	dbsession.SetMode(mgo.Monotonic, true)
 
 	c := dbsession.DB("bingwebmaster").C("sites")
@@ -21,6 +23,26 @@ func Create(dbsession mgo.Session, site string, sitemap []domains.SitemapObj) {
 	}
 
 	if count == 0 {
+//	  fmt.Println("site DB NOT exist ", site)	
+      exist = false     
+	}
+
+	return exist
+}
+
+func Create(dbsession mgo.Session, site string, sitemap []domains.SitemapObj) {
+
+	dbsession.SetMode(mgo.Monotonic, true)
+
+	c := dbsession.DB("bingwebmaster").C("sites")
+
+//	count, err := c.Find(bson.M{"site": site}).Limit(1).Count()
+//	if err != nil {
+//
+//		log.Fatal(err)
+//	}
+//
+//	if count == 0 {
 
 		dbtoinsert := domains.BngDb{site, sitemap}
 
@@ -28,11 +50,11 @@ func Create(dbsession mgo.Session, site string, sitemap []domains.SitemapObj) {
 		if err != nil {
 			panic(err)
 		}
-
-	} else {
-
-		fmt.Println("site DB exist ", site)
-
-	}
+//
+//	} else {
+//
+//		fmt.Println("site DB exist ", site)
+//
+//	}
 
 }
