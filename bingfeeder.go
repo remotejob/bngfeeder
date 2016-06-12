@@ -32,8 +32,6 @@ func init() {
 
 }
 
-// Errors are ignored for brevity.
-
 func main() {
 	// FireFox driver without specific version
 	dbsession, err := mgo.Dial("127.0.0.1")
@@ -116,40 +114,6 @@ func main() {
 		}
 
 	}
-
-	//	linkstosubmit := find_unsubmited.Find(*dbsession, "kaukotuo.fi")
-	//
-	//	var strtoSend string
-	//
-	//	if len(linkstosubmit) > 0 {
-	//
-	//		for _, link := range linkstosubmit {
-	//
-	//			strtoSend = strtoSend + "\n" + link
-	//		}
-	//
-	//		fmt.Println(strtoSend)
-	//
-	//		wd.Get("https://www.bing.com/webmaster/configure/submit/urls?url=http%3A%2F%2Fkaukotyo.fi%2F")
-	//
-	//		time.Sleep(time.Millisecond * 4000)
-	//
-	//		insertlinks, err := wd.FindElement(selenium.ByID, "urls")
-	//		if err != nil {
-	//			fmt.Println(err.Error())
-	//		}
-	//		insertlinks.Clear()
-	//		insertlinks.SendKeys(strtoSend)
-	//		//		insertlinks.SendKeys("")
-	//		time.Sleep(time.Millisecond * 10000)
-	//
-	//		btmsubmit, err := wd.FindElement(selenium.ByID, "addParam")
-	//		if err != nil {
-	//			fmt.Println(err.Error())
-	//		}
-	//		btmsubmit.Click()
-	//		time.Sleep(time.Millisecond * 10000)
-	//
-	//	}
+	
 
 }
