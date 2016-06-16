@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func Find(dbsession mgo.Session, site string) []string {
+func Find(dbsession mgo.Session, site string,i_dailyQuota int) []string {
 
 	dbsession.SetMode(mgo.Monotonic, true)
 
@@ -27,13 +27,13 @@ func Find(dbsession mgo.Session, site string) []string {
 	for i, page := range bngdb.Sitemappages {
 
 		if !page.Submited {
-			//			fmt.Println(page.Loc)
+			
 			bngdb.Sitemappages[i].Submited = true
 			count = count + 1
 			linkstosubmit = append(linkstosubmit, page.Loc)
 		}
 
-		if count > 4 {
+		if count > i_dailyQuota -1 {
 
 			break
 		}

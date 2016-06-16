@@ -14,7 +14,7 @@ func TestFind(t *testing.T) {
 	}
 	defer dbsession.Close()
 
-	linkstosubmit := Find(*dbsession, "kaukotuo.fi")
+	linkstosubmit := Find(*dbsession, "kaukotuo.fi",5)
 
 	var strtoSend string
 	for _, link := range linkstosubmit {

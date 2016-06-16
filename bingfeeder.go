@@ -9,6 +9,7 @@ import (
 	"gopkg.in/gcfg.v1"
 	"gopkg.in/mgo.v2"
 	"log"
+	"strconv"
 	"time"
 )
 
@@ -80,40 +81,66 @@ func main() {
 		if exist {
 
 			fmt.Println("Feed ", site)
-			linkstosubmit := find_unsubmited.Find(*dbsession, site)
-			var strtoSend string
-			if len(linkstosubmit) > 0 {
+			var i_dailyQuota int =0
+			wd.Get("https://www.bing.com/webmaster/configure/submit/urls?url=http%3A%2F%2F" + site + "%2F")
+			time.Sleep(time.Millisecond * 6000)
 
-				for _, link := range linkstosubmit {
+			dailyQuota, err := wd.FindElement(selenium.ByID, "dailyQuota")
+			if err != nil {
+				fmt.Println(err.Error())
+			} else {
 
-					strtoSend = strtoSend + "\n" + link
-				}
-
-				wd.Get("https://www.bing.com/webmaster/configure/submit/urls?url=http%3A%2F%2F" + site + "%2F")
-
-				time.Sleep(time.Millisecond * 7000)
-
-				insertlinks, err := wd.FindElement(selenium.ByID, "urls")
+				dailyQuota_txt, err := dailyQuota.Text()
 				if err != nil {
 					fmt.Println(err.Error())
-				}
-				insertlinks.Clear()
-				insertlinks.SendKeys(strtoSend)
-				//		insertlinks.SendKeys("")
-				time.Sleep(time.Millisecond * 3000)
+				} else {
+					fmt.Println("dailyQuota->", dailyQuota_txt)
+					i_dailyQuota, err = strconv.Atoi(dailyQuota_txt)
+					if err != nil {
+						// handle error
+						fmt.Println(err)
+					}
 
-				btmsubmit, err := wd.FindElement(selenium.ByID, "addParam")
-				if err != nil {
-					fmt.Println(err.Error())
 				}
-				btmsubmit.Click()
-				time.Sleep(time.Millisecond * 4000)
 
 			}
 
+			if i_dailyQuota > 0 {
+
+				linkstosubmit := find_unsubmited.Find(*dbsession, site,i_dailyQuota)
+				
+				var strtoSend string
+				
+				if len(linkstosubmit) > 0 {
+
+					for _, link := range linkstosubmit {
+
+						strtoSend = strtoSend + "\n" + link
+					}
+
+					insertlinks, err := wd.FindElement(selenium.ByID, "urls")
+					if err != nil {
+						fmt.Println(err.Error())
+					}
+					insertlinks.Clear()
+					insertlinks.SendKeys(strtoSend)
+					//		insertlinks.SendKeys("")
+					time.Sleep(time.Millisecond * 3000)
+
+					btmsubmit, err := wd.FindElement(selenium.ByID, "addParam")
+					if err != nil {
+						fmt.Println(err.Error())
+					}
+					btmsubmit.Click()
+					time.Sleep(time.Millisecond * 4000)
+
+				}
+			} else {
+				
+				fmt.Println("No more to submit",site)
+			}
 		}
 
 	}
-	
 
 }
