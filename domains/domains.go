@@ -18,25 +18,6 @@ type BngDb struct {
 	Sitemappages []SitemapObj
 }
 
-//type BlogIndex struct {
-//	Stopic string
-//	Topic  string
-//}
-//
-//type Md struct {
-//	Locale string
-//	Themes string
-//	Site   string
-//	Menu   string
-//	Stopic string
-//	Topic  string
-//	Items  []BlogItem
-//}
-//
-//type Rssresors struct {
-//	Topic string
-//	Link  string
-//}
 
 type ServerConfig struct {
 	Login struct {
